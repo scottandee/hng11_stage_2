@@ -1,4 +1,10 @@
-import { BadRequestException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../api/users/dto/create-user.dto';
 import { UsersService } from '../api/users/users.service';
@@ -16,20 +22,19 @@ export class AuthService {
       const user = await this.usersService.create(createUserDto);
       const jwtPayload = { sub: user.userId };
       return {
-        status: "success",
-        message: "Registration successful",
-        data : {
+        status: 'success',
+        message: 'Registration successful',
+        data: {
           accessToken: await this.jwtService.signAsync(jwtPayload),
-          user
-        }
+          user,
+        },
       };
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       throw new BadRequestException({
         status: 'Bad request',
         message: 'Registration unsuccessful',
-        statusCode: 400
+        statusCode: 400,
       });
     }
   }
@@ -43,20 +48,19 @@ export class AuthService {
       if (!isMatch) throw new UnauthorizedException();
       const jwtPayload = { sub: user.userId };
       return {
-        status: "success",
-        message: "Login successful",
-        data : {
+        status: 'success',
+        message: 'Login successful',
+        data: {
           accessToken: await this.jwtService.signAsync(jwtPayload),
-          user
-        }
+          user,
+        },
       };
-      
-    } catch(error) {
+    } catch (error) {
       console.error(error);
       throw new UnauthorizedException({
         status: 'Bad request',
         message: 'Authentication failed',
-        statusCode: 401
+        statusCode: 401,
       });
     }
   }

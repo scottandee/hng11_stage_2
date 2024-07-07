@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Request, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Request,
+  UseGuards,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { OrganisationsService } from './organisations.service';
 import { CreateOrganisationDto } from './dto/create-organisation.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -17,7 +26,7 @@ export class OrganisationsController {
   @Post(':orgId/users')
   addUserToOrg(
     @Param('orgId', ParseUUIDPipe) orgId: string,
-    @Body() addUserToOrgDto: AddUserToOrgDto
+    @Body() addUserToOrgDto: AddUserToOrgDto,
   ) {
     return this.organisationsService.addUserToOrg(orgId, addUserToOrgDto);
   }

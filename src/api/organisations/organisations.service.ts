@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateOrganisationDto } from './dto/create-organisation.dto';
 import { AddUserToOrgDto } from './dto/add-user-to-org.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +17,7 @@ export class OrganisationsService {
     @InjectRepository(Organisation)
     private readonly organisationsRepository: Repository<Organisation>,
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>
+    private readonly usersRepository: Repository<User>,
   ) {}
   async create(createOrganisationDto: CreateOrganisationDto) {
     try {
@@ -21,46 +25,50 @@ export class OrganisationsService {
       return {
         status: 'success',
         message: 'Organisation created successfully',
-        data: await this.organisationsRepository.save(org)
-      }
-    } catch(error) {
+        data: await this.organisationsRepository.save(org),
+      };
+    } catch (error) {
       console.error(error);
       throw new BadRequestException({
-        status: "Bad request",
-        message: "Client error",
-        statusCode: 400
+        status: 'Bad request',
+        message: 'Client error',
+        statusCode: 400,
       });
     }
   }
 
   async findAll(userId: string) {
     const orgs = await this.organisationsRepository.find({
-      where: { users: { userId } }
-    })
+      where: { users: { userId } },
+    });
     return {
-      status: "success",
-      message: "Here are the organisations you belong to",
-      data: { organisations: orgs }
+      status: 'success',
+      message: 'Here are the organisations you belong to',
+      data: { organisations: orgs },
     };
   }
 
   async findOne(orgId: string) {
-    const org = await this.organisationsRepository.findOne({ where: { orgId } })
-    if (!org) throw new NotFoundException()
+    const org = await this.organisationsRepository.findOne({
+      where: { orgId },
+    });
+    if (!org) throw new NotFoundException();
     return {
       status: 'success',
       message: 'Here is the organisation you requested',
-      data: org
+      data: org,
     };
   }
-  
+
   async addUserToOrg(orgId: string, addUserToOrg: AddUserToOrgDto) {
-    const user = await this.usersRepository.findOne({ where: { userId: addUserToOrg.userId } });
+    const user = await this.usersRepository.findOne({
+      where: { userId: addUserToOrg.userId },
+    });
     if (!user) throw new NotFoundException('User not found');
 
     const organisation = await this.organisationsRepository.findOne({
       where: { orgId },
-      relations: { users: true }
+      relations: { users: true },
     });
     if (!organisation) throw new NotFoundException('Organisation not found');
 
@@ -69,7 +77,7 @@ export class OrganisationsService {
 
     return {
       status: 'success',
-      message: 'User added to organisation successfully'
-    }
+      message: 'User added to organisation successfully',
+    };
   }
 }

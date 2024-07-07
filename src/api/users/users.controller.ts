@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseUUIDPipe, UseGuards, Request, ForbiddenException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  UseGuards,
+  Request,
+  ForbiddenException,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../../auth/auth.guard';
 
@@ -11,7 +19,7 @@ export class UsersController {
   findOne(@Param('userId', ParseUUIDPipe) userId: string, @Request() request) {
     if (request.user.sub !== userId) {
       throw new ForbiddenException();
-    } 
+    }
     return this.usersService.findOne(userId);
   }
 }

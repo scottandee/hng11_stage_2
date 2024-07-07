@@ -4,7 +4,7 @@ import { ValidationError } from 'class-validator';
 export class CustomValidationPipe extends ValidationPipe {
   public createExceptionFactory() {
     return (validationErrors: ValidationError[] = []) => {
-      const formattedErrors = validationErrors.map(error => ({
+      const formattedErrors = validationErrors.map((error) => ({
         field: error.property,
         message: Object.values(error.constraints || {}).join(', '),
       }));

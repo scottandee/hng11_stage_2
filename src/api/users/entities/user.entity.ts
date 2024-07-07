@@ -1,9 +1,16 @@
-import { Organisation } from "src/api/organisations/entities/organisation.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Organisation } from '../../../api/organisations/entities/organisation.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   userId: string; // must be unique
 
   @Column({ nullable: false })
