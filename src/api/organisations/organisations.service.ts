@@ -29,7 +29,7 @@ export class OrganisationsService {
         relations: { users: true },
       });
       organisation.users.push(user);
-      this.organisationsRepository.save(organisation);
+      await this.organisationsRepository.save(organisation);
       return {
         status: 'success',
         message: 'Organisation created successfully',
