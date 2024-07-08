@@ -9,7 +9,7 @@ export class Organisation {
   @Column({ nullable: false })
   name: string; // Required and cannot be null
 
-  @Column({ nullable: true })
+  @Column({ default: "" })
   description: string;
 
   @ManyToMany(() => User, (user) => user.organisations)

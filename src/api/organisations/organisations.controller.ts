@@ -7,6 +7,7 @@ import {
   Request,
   UseGuards,
   ParseUUIDPipe,
+  HttpCode,
 } from '@nestjs/common';
 import { OrganisationsService } from './organisations.service';
 import { CreateOrganisationDto } from './dto/create-organisation.dto';
@@ -19,10 +20,11 @@ export class OrganisationsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() createOrganisationDto: CreateOrganisationDto) {
-    return this.organisationsService.create(createOrganisationDto);
+  create(@Body() createOrganisationDto: CreateOrganisationDto, @Request() request) {
+    return this.organisationsService.create(createOrganisationDto, request.user.sub);
   }
 
+  @HttpCode(200)
   @Post(':orgId/users')
   addUserToOrg(
     @Param('orgId', ParseUUIDPipe) orgId: string,

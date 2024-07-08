@@ -18,13 +18,22 @@ export class OrganisationsService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-  async create(createOrganisationDto: CreateOrganisationDto) {
+  async create(createOrganisationDto: CreateOrganisationDto, userId: string) {
     try {
-      const org = this.organisationsRepository.create(createOrganisationDto);
+      let org = this.organisationsRepository.create(createOrganisationDto);
+      const user = await this.usersRepository.findOne({ where: { userId } });
+      org = await this.organisationsRepository.save(org);
+
+      const organisation = await this.organisationsRepository.findOne({
+        where: { orgId :org.orgId },
+        relations: { users: true },
+      });
+      organisation.users.push(user);
+      this.organisationsRepository.save(organisation);
       return {
         status: 'success',
         message: 'Organisation created successfully',
-        data: await this.organisationsRepository.save(org),
+        data: org,
       };
     } catch (error) {
       console.error(error);
