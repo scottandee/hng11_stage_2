@@ -17,9 +17,6 @@ export class UsersController {
   @Get(':userId')
   @UseGuards(AuthGuard)
   findOne(@Param('userId', ParseUUIDPipe) userId: string, @Request() request) {
-    if (request.user.sub !== userId) {
-      throw new ForbiddenException();
-    }
-    return this.usersService.findOne(userId);
+    return this.usersService.findOne(userId, request.user.sub);
   }
 }

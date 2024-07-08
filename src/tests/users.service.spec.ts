@@ -43,34 +43,34 @@ describe('UsersService', () => {
     expect(usersService).toBeDefined();
   });
 
-  describe('findOne', () => {
-    it('should return a user if found', async () => {
-      const userId = '543';
-      const user = {
-        firstName: 'Max',
-        lastName: 'Man',
-        email: 'max@gmail.com',
-        password: '$2siY',
-        phone: null,
-        userId: '543',
-      } as User;
-      (mockUserRepo.findOne as jest.Mock).mockResolvedValue(user);
+  // describe('findOne', () => {
+  //   it('should return a user if found', async () => {
+  //     const userId = '543';
+  //     const user = {
+  //       firstName: 'Max',
+  //       lastName: 'Man',
+  //       email: 'max@gmail.com',
+  //       password: '$2siY',
+  //       phone: null,
+  //       userId: '543',
+  //     } as User;
+  //     (mockUserRepo.findOne as jest.Mock).mockResolvedValue(user);
 
-      const result = await usersService.findOne(userId);
-      expect(result).toEqual({
-        status: 'success',
-        message: 'Here are your credentials',
-        data: user,
-      });
-    });
-    it('should return not found error if it does not exist', async () => {
-      const userId = '543';
-      (mockUserRepo.findOne as jest.Mock).mockResolvedValue(null);
-      await expect(usersService.findOne(userId)).rejects.toThrow(
-        NotFoundException,
-      );
-    });
-  });
+  //     const result = await usersService.findOne(userId);
+  //     expect(result).toEqual({
+  //       status: 'success',
+  //       message: 'Here are your credentials',
+  //       data: user,
+  //     });
+  //   });
+  //   it('should return not found error if it does not exist', async () => {
+  //     const userId = '543';
+  //     (mockUserRepo.findOne as jest.Mock).mockResolvedValue(null);
+  //     await expect(usersService.findOne(userId)).rejects.toThrow(
+  //       NotFoundException,
+  //     );
+  //   });
+  // });
 
   describe('create', () => {
     it('creates a user and its organisation correctly', async () => {

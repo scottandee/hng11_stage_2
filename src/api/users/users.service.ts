@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -39,15 +39,29 @@ export class UsersService {
     return user;
   }
 
-  async findOne(userId: string) {
-    const user = await this.usersRepository.findOne({ where: { userId } });
-    if (!user) throw new NotFoundException();
-
-    return {
-      status: 'success',
-      message: 'Here are your credentials',
-      data: user,
-    };
+  async findOne(userId: string, reqId: string) {
+    const user = await this.usersRepository.findOne({
+      where: { userId: reqId },
+      relations: { organisations: true }
+    });
+    const organisationIds = user.organisations.map(org => org.orgId);
+    console.log(organisationIds)
+    const users = await this.usersRepository
+      .createQueryBuilder('user')
+      .innerJoin('user.organisations', 'organisation')
+      .where('organisation.orgId IN (:...organisationIds)', { organisationIds })
+      .getMany();
+    console.log(users)
+    for (let user of users) {
+      if (user.userId === userId) {
+        return {
+          status: 'success',
+          message: 'Here are your credentials',
+          data: user,
+        }; 
+      }
+    }
+    throw new ForbiddenException();
   }
 
   findOneByEmail(email: string) {
