@@ -27,7 +27,6 @@ describe('AuthService', () => {
         AuthService,
         { provide: UsersService, useValue: usersService },
         { provide: JwtService, useValue: jwtService },
-
       ],
     }).compile();
 
@@ -40,8 +39,15 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('should login a user successfully', async () => {
-      const loginDto = { email: 'sasa@gmail.com', password: 'mana'} as LoginDto;
-      const user = { userId: 1, email: 'test@test.com', password: await bcrypt.hash('password', 10) };
+      const loginDto = {
+        email: 'sasa@gmail.com',
+        password: 'mana',
+      } as LoginDto;
+      const user = {
+        userId: 1,
+        email: 'test@test.com',
+        password: await bcrypt.hash('password', 10),
+      };
       (usersService.findOneByEmail as jest.Mock).mockResolvedValue(user);
       (jwtService.signAsync as jest.Mock).mockResolvedValue('token');
       const bcryptCompare = jest.fn().mockResolvedValue(true);
@@ -60,15 +66,23 @@ describe('AuthService', () => {
     });
 
     it('should throw an error if email does not exist', async () => {
-      const loginDto = { email: 'sasa@gmail.com', password: 'mana'} as LoginDto;
+      const loginDto = {
+        email: 'sasa@gmail.com',
+        password: 'mana',
+      } as LoginDto;
       (usersService.findOneByEmail as jest.Mock).mockResolvedValue(null);
-      (await expect(service.login(loginDto))).rejects.toThrow(UnauthorizedException);
+      (await expect(service.login(loginDto))).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 
   describe('register', () => {
     it('should register a user successfully', async () => {
-      const createUserDto = { email: 'test@test.com', password: 'password' } as CreateUserDto;
+      const createUserDto = {
+        email: 'test@test.com',
+        password: 'password',
+      } as CreateUserDto;
       const user = { userId: 1, ...createUserDto };
       (usersService.create as jest.Mock).mockResolvedValue(user);
       (jwtService.signAsync as jest.Mock).mockResolvedValue('token');

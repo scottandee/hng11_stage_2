@@ -2,7 +2,6 @@ import { Organisation } from '../../../api/organisations/entities/organisation.e
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,

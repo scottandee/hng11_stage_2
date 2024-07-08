@@ -45,7 +45,10 @@ describe('OrganisationsService', () => {
 
   describe('create organisation', () => {
     it('should create a new user successfully', async () => {
-      const orgDto = { name: "Andee", description: "new orrg" } as CreateOrganisationDto;
+      const orgDto = {
+        name: 'Andee',
+        description: 'new orrg',
+      } as CreateOrganisationDto;
       const org = { ...orgDto, orgId: '7674fd' };
 
       (mockOrgRepo.create as jest.Mock).mockResolvedValue(org);

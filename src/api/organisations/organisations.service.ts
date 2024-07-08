@@ -8,7 +8,6 @@ import { AddUserToOrgDto } from './dto/add-user-to-org.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organisation } from './entities/organisation.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
