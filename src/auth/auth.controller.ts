@@ -12,7 +12,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @Get('login')
+  @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
